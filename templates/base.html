@@ -1,0 +1,25 @@
+<!-- templates/base.html -->
+<html>
+
+
+<head>
+    <title>Pauls Garden </title>
+</head>
+<body>
+
+
+<header>
+    <div class="nav-left">
+       <h1> <a href= "{% url 'home' %}">Home</a></h1>
+    </div>
+    <div class="nav-right">
+       <a href= "{% url 'plant_new' %}">Add New Plant</a>
+    </div>
+</header>
+
+
+{% block content%}
+{% endblock content%}
+
+</body>
+</html>

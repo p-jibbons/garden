@@ -1,0 +1,12 @@
+<!-- templates/home.html -->
+
+
+{% extends 'base.html' %}
+
+{% block content%}
+<ul>
+    {% for plant in all_plants_list %}
+    <li>{{ plant.plant_nickname}}</li>
+    {% endfor%}
+</ul>
+{% endblock content%}

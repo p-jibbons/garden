@@ -1,0 +1,13 @@
+<!-- templates/plant.html -->
+
+
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="plant-entry">
+    <h2>{{ object.plant_species}}</h2>
+    <p>{{ object.description}}</p>
+</div>
+
+<a href="{% url 'plant_edit' plant.pk">+ edit plant info</a>
+{% endblock content%}

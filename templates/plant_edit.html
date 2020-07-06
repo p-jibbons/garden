@@ -1,0 +1,12 @@
+<!-- templates/plant_edit.html -->
+
+
+{% extends 'base.html' %}
+
+{% block content%}
+    <h1>Edit Plant</h1>
+    <form actions"" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update" />
+    </form>
+{% endblock content%}
