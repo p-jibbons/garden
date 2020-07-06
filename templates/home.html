@@ -3,10 +3,16 @@
 
 {% extends 'base.html' %}
 
-{% block content%}
-<ul>
-    {% for plant in all_plants_list %}
-    <li>{{ plant.plant_nickname}}</li>
-    {% endfor%}
-</ul>
-{% endblock content%}
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<img src="https://indoorgardening.com/wp-content/uploads/2019/02/indoor-vertical-garden-1280x720.jpg" width = 100% height = 100%>
+<div class="jumbotron">
+  <h1 class="display-4">Pauls Garden</h1>
+  <p class="lead">My Garden</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'plant_list' %}" role="button">View All Plants</a>
+</div>
+
+
+
+{% endblock content %}

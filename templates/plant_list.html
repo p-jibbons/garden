@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Plants{% endblock title %}
+
+{% block content %}
+
+  {% for plant in plants %}
+    <div class="card">
+      <div class="card-header">
+        <a href = "{% url 'plant_detail' plant.pk %}"><span class="font-weight-bold">{{ plant.plant_species }}</span></a> &middot;
+        <span class="text-muted"> {{ plant.planted_date }}</span>
+      </div>
+      <div class="card-body">
+        {{ plant.description }}
+      </div>
+    </div>
+    <br />
+  {% endfor %}
+{% if is_paginated %}
+  <nav aria-label="Page navigation conatiner"></nav>
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+    <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+
+    {% endif %}
+  </ul>
+  </nav>
+</div>
+{% endif %}
+{% endblock content %}

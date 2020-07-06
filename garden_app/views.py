@@ -13,11 +13,22 @@ from django.contrib.auth.models import User
 
 from django.views.generic import ListView,DetailView
 from django.views.generic import CreateView,UpdateView
+from django.views.generic import TemplateView
+
+class HomePageView(TemplateView):
+    template_name = 'home.html'
 
 class PlantListView(ListView):
-    template_name = 'home.html'
+    template_name = 'plant_list.html'
     model = Plant
-    context_object_name = 'all_plants_list'
+    context_object_name = 'plants'
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super(PlantListView, self).get_context_data(**kwargs)
+        return context
+
+
 
 class PlantDetailView(DetailView):
     template_name = 'plant.html'

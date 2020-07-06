@@ -3,11 +3,15 @@
 
 {% extends 'base.html' %}
 
-{% block content%}
+{% block content %}
 <div class="plant-entry">
-    <h2>{{ object.plant_species}}</h2>
-    <p>{{ object.description}}</p>
-</div>
+  <img src=   {{"http://127.0.0.1:8000/media/images/dracaena.jpg"}} width = 50% height = 50%>
+  <h2>{{ object.plant_nickname }}</h2>
+    <h3>Purchased on {{ object.planted_date }} from {{ object.retailer_name }}</h3>
+    <p>  </p>
+    <p>{{ object.plant_species }}</p>
+    <p>{{ object.description }}</p>
+  </div>
 
-<a href="{% url 'plant_edit' plant.pk">+ edit plant info</a>
-{% endblock content%}
+  <p>Back to <a href="{% url 'plant_list' %}">All Plants</a>.</p>
+{% endblock content %}
