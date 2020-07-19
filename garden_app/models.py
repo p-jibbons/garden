@@ -31,6 +31,7 @@ class PlantMeasurement(models.Model):
     measurement_timestamp = models.DateTimeField()
     environmental_dimension= models.CharField(max_length=100,choices=ENVIRONMENTAL_DIMENSION)
     environmental_value = models.IntegerField()
+
     class Meta:
         db_table = 'plant_measurements'
         ordering = ['measurement_timestamp']
@@ -97,6 +98,8 @@ class ArduinoPin(models.Model):
     plant_id = models.ForeignKey('Plant', on_delete=models.CASCADE, null=True, blank=True)
     pin_number = models.CharField(max_length=10,choices=ARDUINO_PIN_CHOICES.choices)
     environmental_dimension = models.CharField(max_length=100, choices=ENVIRONMENTAL_DIMENSION)
+    sensor_low = models.IntegerField(null=True, blank=True)
+    sensor_high = models.IntegerField(null=True, blank=True)
     is_collecting = models.BooleanField(default=False)
 
 
