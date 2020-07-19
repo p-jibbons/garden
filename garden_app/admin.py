@@ -19,8 +19,8 @@ class PlantMeasurementadmin(admin.ModelAdmin):
 
 
 class ArduinoPinadmin(admin.ModelAdmin):
-    list_display = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting']
-    fields = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting']
+    list_display = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','sensor_low','sensor_high','is_collecting']
+    fields = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting','sensor_low','sensor_high']
 
     list_filter = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting']
     list_editable =[ 'plant_id', 'environmental_dimension', 'pin_number','is_collecting']
