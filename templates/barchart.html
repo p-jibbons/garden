@@ -1,11 +1,8 @@
-<!-- templates/plant.html -->
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
-<div class="plant-entry">
-  <img src="{% static 'garden_app/plant1.jpg' %}" width = 40% height = 40%" >
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -20,15 +17,7 @@
 
 <script src="{% static 'garden_app/js/radarChart.js'  %}"></script>
 <script src="{% static 'garden_app/js/barChart.js'  %}"></script>
-  <h2>{{ object.plant_nickname }}</h2>
-    <h3>Purchased on {{ object.planted_date }} from {{ object.retailer_name }}</h3>
-    <p>  </p>
-    <p>{{ object.plant_species }}</p>
-    <p>{{ object.description }}</p>
-  </div>
-
-  <p>Back to <a href="{% url 'plant_list' %}">All Plants</a>.</p>
 
 
 
-{% endblock content %}
+{% endblock %}

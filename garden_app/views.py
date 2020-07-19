@@ -1,6 +1,8 @@
+from django.shortcuts import render
 
-from garden_app.models import Plant,PlantMeasurement
-from garden_app.serializers import  PlantSerializer, PlantMeasurementSerializer, UserSerializer
+
+from garden_app.models import Plant,PlantMeasurement,ArduinoPin
+from garden_app.serializers import  PlantSerializer, PlantMeasurementSerializer, UserSerializer,ArduinoPinSerializer
 # from garden_app.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 from rest_framework import viewsets
@@ -96,18 +98,55 @@ class PlantMeasurementViewSet(viewsets.ModelViewSet):
     # def perform_create(self, serializer):
     #     serializer.save(owner=self.request.user)
 
+class ArduinoPinViewSet(viewsets.ModelViewSet):
 
+    serializer_class = ArduinoPinSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = ArduinoPin.objects.all()
+        arduino_id_param = self.request.query_params.get('arduino_id', None)
+        is_collecting_param = self.request.query_params.get('is_collecting', None)
+        if arduino_id_param is not None:
+            queryset = queryset.filter(arduino_id=arduino_id_param)
+            queryset = queryset.filter(is_collecting=is_collecting_param)
+        return queryset
 
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
         'users': reverse('user-list', request=request, format=format),
-        'plants': reverse('plant-list', request=request, format=format)
+        'plants': reverse('plant-list', request=request, format=format),
+        'arduino_pin': reverse('arduino_pin-list', request=request, format=format),
     })
 
 
 
 
 
+from django.shortcuts import render
+from django.db.models import Sum,Avg, Min,Max
+from django.http import JsonResponse
 
+
+
+def barchart(request):
+    return render(request, 'barchart.html')
+
+
+def measurement_chart(request):
+    labels = []
+    data = []
+
+    queryset = PlantMeasurement.objects.values('plant_id','environmental_dimension').annotate(value_population=Avg('environmental_value')).order_by('-plant_id')
+    for entry in queryset:
+        labels.append(entry['environmental_dimension'])
+        data.append(entry['value_population'])
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
