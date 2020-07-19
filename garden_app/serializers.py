@@ -24,12 +24,12 @@ class PlantSerializer(serializers.HyperlinkedModelSerializer):
 class PlantMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlantMeasurement
-        fields = ['plant_id', 'measurement_timestamp', 'environmental_dimension', 'environmental_value','sensor_low','sensor_high']
+        fields = ['plant_id', 'measurement_timestamp', 'environmental_dimension', 'environmental_value']
 
 class ArduinoPinSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArduinoPin
-        fields = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting']
+        fields = [ 'arduino_id','plant_id', 'environmental_dimension', 'pin_number','is_collecting','sensor_low','sensor_high']
 
 
 
