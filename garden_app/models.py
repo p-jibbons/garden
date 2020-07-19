@@ -92,10 +92,10 @@ class ArduinoBoard(models.Model):
 
 
 class ArduinoPin(models.Model):
-    ARDUINO_PIN_CHOICES = models.TextChoices('ARDUINO_PIN_CHOICES', 'A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13  A14 A15')
+    ARDUINO_PIN_CHOICES = models.TextChoices('ARDUINO_PIN_CHOICES', 'a:0:i a:1:i a:2:i a:3:i a:4:i a:5:i a:6:i a:7:i a:8:i a:9:i a:10:i a:11:i a:12:i a:13:i a:14:i a:15:i')
     arduino_id = models.ForeignKey('ArduinoBoard', on_delete=models.CASCADE, null=True, blank=True)
     plant_id = models.ForeignKey('Plant', on_delete=models.CASCADE, null=True, blank=True)
-    pin_number = models.CharField(max_length=5,choices=ARDUINO_PIN_CHOICES.choices)
+    pin_number = models.CharField(max_length=10,choices=ARDUINO_PIN_CHOICES.choices)
     environmental_dimension = models.CharField(max_length=100, choices=ENVIRONMENTAL_DIMENSION)
     is_collecting = models.BooleanField(default=False)
 
