@@ -1,13 +1,13 @@
 import requests
 import json
-import pandas as pd
-from pandas import json_normalize
+# import pandas as pd
+# from pandas import json_normalize
 import numpy as np
 import random
 import datetime
 from pyfirmata import Arduino, util
 import time
-# board = Arduino('COM3')
+
 
 import serial.tools.list_ports
 
@@ -45,6 +45,7 @@ def iterate_config_list(config_df):
         board = Arduino(row['device'])
         iterator = util.Iterator(board)
         iterator.start()
+        print(row['pin_number'])
         voltage = board.get_pin('a:0:1')
         time.sleep(.3)
 
