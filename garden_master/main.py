@@ -1,7 +1,7 @@
 import requests
 import json
-# import pandas as pd
-# from pandas import json_normalize
+import pandas as pd
+from pandas import json_normalize
 import numpy as np
 import random
 import datetime
@@ -34,46 +34,47 @@ def build_iterator():
     port_df = list_ports()
     config_df = config_df.merge(port_df,how='left',left_on='arduino_id', right_on='serial_number')
     config_df['environmental_value'] = np.nan
-    print(config_df.columns)
     return(config_df)
 
 config_df= build_iterator()
 
 
-def iterate_config_list(config_df):
+def translate(value, LeftMin, LeftMax,RightMin, RightMax):
+    # Figure out how 'wide' each range is
+    LeftSpan = LeftMax - LeftMin
+    RightSpan =  RightMax- RightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - LeftMin) / float(LeftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return int(RightMin + (valueScaled * RightSpan))
+
+
+
+def iterate_config_list(config_df,port_id):
+    board = Arduino(port_id)
+    iterator = util.Iterator(board)
+    iterator.start()
     for index, row in config_df.iterrows():
-        board = Arduino(row['device'])
-        iterator = util.Iterator(board)
-        iterator.start()
-        print(row['pin_number'])
-        voltage = board.get_pin('a:0:1')
+
+        voltage = board.get_pin(row['pin_number'])
         time.sleep(.3)
+        voltage=voltage.read()
+        config_df.at[index,'environmental_value'] = translate(voltage,0,100,row['sensor_low'],row['sensor_high'])
 
+        column_names = ['plant_id', 'measurement_timestamp', 'environmental_dimension', 'environmental_value']
+        df_row = pd.DataFrame(columns=column_names)
 
+        dict = {'plant_id': row['plant_id'],
+                'measurement_timestamp': datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+                'environmental_dimension': row['environmental_dimension'],
+                'environmental_value': row['environmental_value']
+               }
 
-
-
-
-
-
-iterate_config_list(config_df)
-
-
-    #
-
-# board = Arduino('COM3')
-#
-#
-#
-#
-#
-#
-# iterator = util.Iterator(board)
-# iterator.start()
-#
-# Tv1 = board.get_pin('a:0:1')
-# time.sleep(1.0)
-# print(Tv1.read())
+        r = requests.post('https://pauls-garden.herokuapp.com/api/plant_measurement/', json=dict)
+        print(r.json())
+    board.exit()
 
 
 
@@ -87,39 +88,24 @@ iterate_config_list(config_df)
 
 
 
-# while True:
-#     api_url = 'https://pauls-garden.herokuapp.com/api/plant_measurement/'
-#     response = requests.get(api_url)
-#     if response.status_code == 200:
-#         json_string = ( json.loads(response.content.decode('utf-8')))
-#         df = json_normalize(json_string,'results')
-#         for index, row in df.iterrows():
-#             column_names = ['plant_id', 'measurement_timestamp', 'environmental_dimension', 'environmental_value']
-#             df_row = pd.DataFrame(columns=column_names)
-#
-#             dict = {'plant_id': row['plant_id'],
-#                     'measurement_timestamp': datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
-#                     'environmental_dimension': row['environmental_dimension'],
-#                     'environmental_value': random.randint(50,60)
-#                    }
-#
-#             measure_json = (json.dumps(dict))
-#             # r = requests.post('http://127.0.0.1:8000/api/plant_measurement/', json=dict)
-#             print(r.json())
-#             time.sleep(1)
-#
-#
-#     else:
-#         pass
-#
-#     time.sleep(10)
-#     print(' ')
-#
-#
-#
-#
-#
-#
-#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+while True:
+    iterate_config_list(config_df, 'COM3')
+    time.sleep(3)
+    print(' ')
+
 
 
